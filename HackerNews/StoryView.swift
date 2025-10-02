@@ -38,19 +38,12 @@ struct StoryView: View {
     @Bindable var viewModel: StoryViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12
-        ) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text(viewModel.title)
                     .font(.headline)
                 Spacer()
             }
-            
-            textWithIcon(
-                icon: "link",
-                text: viewModel.link
-            )
-            .padding(.bottom, 8)
             
             HStack(spacing: 16) {
                 textWithIcon(
@@ -63,20 +56,28 @@ struct StoryView: View {
                     text: viewModel.author
                 )
                 
-                Spacer()
-            }
-            
-            HStack(spacing: 16) {
                 textWithIcon(
                     icon: "clock",
                     text: "\(viewModel.dateAgo) ago"
                 )
-                
-                textWithIcon(
-                    icon: "message",
-                    text: "\(viewModel.comments) comments"
-                )
             }
+            
+            HStack(spacing: 16) {
+                buttonFor(
+                    icon: "message",
+                    text: "\(viewModel.comments) comments",
+                    action: {}
+                )
+                .foregroundStyle(.orange)
+                
+                buttonFor(
+                    icon: "link",
+                    text: viewModel.link,
+                    action: {}
+                )
+                .foregroundStyle(.blue)
+            }
+            .padding(.top, 8)
         }
         .padding()
         .background(
@@ -85,11 +86,36 @@ struct StoryView: View {
         )
     }
     
-    func textWithIcon(icon: String, text: String) -> some View {
-        HStack(spacing: 8) {
+    func textWithIcon(
+        icon: String,
+        text: String,
+        spacing: CGFloat = 8
+    ) -> some View {
+        HStack(spacing: spacing) {
             Image(systemName: icon)
             Text(text)
         }
+    }
+    
+    func buttonFor(
+        icon: String,
+        text: String,
+        action: @escaping (() -> Void)
+    ) -> some View {
+        Button(
+            action: action,
+            label: {
+                HStack(spacing: 4) {
+                    Image(systemName: icon)
+                    Text(text)
+                        .minimumScaleFactor(0.7)
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+            }
+        )
+        .glassEffect()
+        .frame(height: 48)
     }
 }
 
