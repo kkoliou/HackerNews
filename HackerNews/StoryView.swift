@@ -7,40 +7,14 @@
 
 import SwiftUI
 
-@Observable
-class StoryViewModel {
-    var title: String
-    var link: String
-    var points: Int
-    var author: String
-    var dateAgo: String
-    var comments: Int
-    
-    init(
-        title: String,
-        link: String,
-        points: Int,
-        author: String,
-        date: Date,
-        comments: Int
-    ) {
-        self.title = title
-        self.link = link.domainUrl ?? ""
-        self.points = points
-        self.author = author
-        self.dateAgo = date.timeAgoFromNow()
-        self.comments = comments
-    }
-}
-
 struct StoryView: View {
     
-    @Bindable var viewModel: StoryViewModel
+    let story: Story
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(viewModel.title)
+                Text(story.title)
                     .font(.headline)
                 Spacer()
             }
@@ -48,31 +22,31 @@ struct StoryView: View {
             HStack(spacing: 16) {
                 textWithIcon(
                     icon: "arrow.up.right",
-                    text: "\(viewModel.points) pts"
+                    text: "\(story.points) pts"
                 )
                 
                 textWithIcon(
                     icon: "person",
-                    text: viewModel.author
+                    text: story.author
                 )
                 
                 textWithIcon(
                     icon: "clock",
-                    text: "\(viewModel.dateAgo) ago"
+                    text: "\(story.dateAgo) ago"
                 )
             }
             
             HStack(spacing: 16) {
                 buttonFor(
                     icon: "message",
-                    text: "\(viewModel.comments) comments",
+                    text: "\(story.comments) comments",
                     action: {}
                 )
                 .foregroundStyle(.orange)
                 
                 buttonFor(
                     icon: "link",
-                    text: viewModel.link,
+                    text: story.link,
                     action: {}
                 )
                 .foregroundStyle(.blue)
@@ -114,7 +88,7 @@ struct StoryView: View {
                 .frame(maxWidth: .infinity)
             }
         )
-        .glassEffect()
+        .identityInteractiveGlassEffect()
         .frame(height: 48)
     }
 }
@@ -130,7 +104,7 @@ struct StoryView: View {
     let mockDate = Calendar.current.date(from: components)!
     
     return StoryView(
-        viewModel: .init(
+        story: .init(
             title: "title",
             link: "https://www.example.com?temp=25",
             points: 5,

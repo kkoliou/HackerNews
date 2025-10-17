@@ -1,0 +1,66 @@
+//
+//  HackerNewsClientMock.swift
+//  HackerNewsClient
+//
+//  Created by Konstantinos Kolioulis on 18/10/25.
+//
+
+import Foundation
+
+public actor StoriesStorage {
+    public var stories: [DomainStory]
+    public init(stories: [DomainStory]) {
+        self.stories = stories
+    }
+}
+
+final public class HackerNewsClientMock: HackerNewsClientProtocol {
+    
+    public let storage: StoriesStorage
+    
+    public init(storage: StoriesStorage) {
+        self.storage = storage
+    }
+    
+    public func getTopStories() async throws -> [Int] {
+        return [45622204, 45622199, 45622113]
+    }
+    
+    public func getNewStories() async throws -> [Int] {
+        return []
+    }
+    
+    public func getBestStories() async throws -> [Int] {
+        return []
+    }
+    
+    public func getJobStories() async throws -> [Int] {
+        return []
+    }
+    
+    public func getAskStories() async throws -> [Int] {
+        return []
+    }
+    
+    public func getShowStories() async throws -> [Int] {
+        return []
+    }
+    
+    public func getItem(id: Int) async throws -> DomainStory {
+        if let story = await storage.stories.first(where: { $0.id == id }) {
+            return story
+        } else {
+            throw StoryError()
+        }
+    }
+    
+    public func getItems(ids: [Int]) async -> [DomainStory] {
+        var storiesToReturn = [DomainStory]()
+        for id in ids {
+            if let story = await storage.stories.first(where: { $0.id == id }) {
+                storiesToReturn.append(story)
+            }
+        }
+        return storiesToReturn
+    }
+}
