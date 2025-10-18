@@ -6,54 +6,65 @@
 //
 
 import SwiftUI
+import HackerNewsClient
 
 struct StoryView: View {
     
-    let story: Story
+    let story: DomainStory
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(story.title)
+                Text(story.title ?? "")
                     .font(.headline)
                 Spacer()
             }
             
             HStack(spacing: 16) {
-                textWithIcon(
-                    icon: "arrow.up.right",
-                    text: "\(story.points) pts"
-                )
+                if let score = story.score {
+                    textWithIcon(
+                        icon: "arrow.up.right",
+                        text: "\(score) pts"
+                    )
+                }
                 
-                textWithIcon(
-                    icon: "person",
-                    text: story.author
-                )
+                if let author = story.author {
+                    textWithIcon(
+                        icon: "person",
+                        text: author
+                    )
+                }
                 
-                textWithIcon(
-                    icon: "clock",
-                    text: "\(story.dateAgo) ago"
-                )
+                if let dateAgo = story.getTimeAgo() {
+                    textWithIcon(
+                        icon: "clock",
+                        text: "\(dateAgo) ago"
+                    )
+                }
             }
             
             HStack(spacing: 16) {
                 buttonFor(
                     icon: "message",
-                    text: "\(story.comments) comments",
+                    text: "\(story.descendants ?? 0) comments",
                     action: {}
                 )
                 .foregroundStyle(.orange)
                 
-                buttonFor(
-                    icon: "link",
-                    text: story.link,
-                    action: {}
-                )
-                .foregroundStyle(.blue)
+                if let url = story.getDomainUrl(), !url.isEmpty {
+                    buttonFor(
+                        icon: "link",
+                        text: url,
+                        action: {}
+                    )
+                    .foregroundStyle(.blue)
+                }
             }
             .padding(.top, 8)
         }
-        .padding()
+        .padding(.horizontal, 16)
+        .padding(.top, 24)
+        .padding(.bottom, 12)
         .background(
             Material.thickMaterial,
             in: RoundedRectangle(cornerRadius: 24, style: .circular)
@@ -105,12 +116,15 @@ struct StoryView: View {
     
     return StoryView(
         story: .init(
+            id: 43,
             title: "title",
-            link: "https://www.example.com?temp=25",
-            points: 5,
             author: "author",
-            date: mockDate,
-            comments: 5
+            url: URL(string: "https://www.example.com?temp=25"),
+            type: "",
+            score: 5,
+            descendants: 5,
+            kids: nil,
+            time: Date.current
         )
     )
     .padding(.horizontal, 16)

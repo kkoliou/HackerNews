@@ -9,9 +9,9 @@ import Foundation
 
 struct StoryResponse: Decodable, Equatable {
     
-    let id: Int
+    let id: Int?
     let title: String?
-    let author: String
+    let author: String?
     let url: URL?
     let type: String?
     let score: Int?
@@ -28,9 +28,9 @@ struct StoryResponse: Decodable, Equatable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(Int.self, forKey: .id)
+        self.id = try container.decodeIfPresent(Int.self, forKey: .id)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
-        self.author = try container.decode(String.self, forKey: .author)
+        self.author = try container.decodeIfPresent(String.self, forKey: .author)
         
         if let urlString = try container.decodeIfPresent(String.self, forKey: .url) {
             self.url = URL(string: urlString)

@@ -17,13 +17,15 @@ public actor StoriesStorage {
 final public class HackerNewsClientMock: HackerNewsClientProtocol {
     
     public let storage: StoriesStorage
+    public let topStories: [Int]
     
-    public init(storage: StoriesStorage) {
+    public init(storage: StoriesStorage, topStories: [Int]) {
         self.storage = storage
+        self.topStories = topStories
     }
     
     public func getTopStories() async throws -> [Int] {
-        return [45622204, 45622199, 45622113]
+        return topStories
     }
     
     public func getNewStories() async throws -> [Int] {

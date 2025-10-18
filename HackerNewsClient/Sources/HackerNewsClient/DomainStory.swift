@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct DomainStory: Sendable {
-    public let id: Int
+public struct DomainStory: Sendable, Identifiable {
+    public let id: Int?
     public let title: String?
-    public let author: String
+    public let author: String?
     public let url: URL?
     public let type: String?
     public let score: Int?
@@ -19,9 +19,9 @@ public struct DomainStory: Sendable {
     public let time: Date?
     
     public init(
-        id: Int,
+        id: Int?,
         title: String?,
-        author: String,
+        author: String?,
         url: URL?,
         type: String?,
         score: Int?,

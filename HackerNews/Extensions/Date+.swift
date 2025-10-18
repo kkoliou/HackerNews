@@ -8,8 +8,7 @@
 import Foundation
 
 extension Date {
-    func timeAgoFromNow() -> String {
-        let now = Date.current
+    func timeAgoFromNow(_ now: Date = Date.current) -> String {
         
         let components = Calendar.current.dateComponents(
             [.year, .month, .weekOfYear, .day, .hour, .minute],

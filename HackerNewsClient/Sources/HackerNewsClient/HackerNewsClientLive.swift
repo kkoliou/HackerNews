@@ -69,8 +69,9 @@ final public class HackerNewsClientLive: HackerNewsClientProtocol {
         }
         
         let sorted = stories.sorted { lhs, rhs in
-            let lIndex = indexById[lhs.id] ?? Int.max
-            let rIndex = indexById[rhs.id] ?? Int.max
+            guard let lhsId = lhs.id, let rhsId = rhs.id else { return false }
+            let lIndex = indexById[lhsId] ?? 0
+            let rIndex = indexById[rhsId] ?? 1
             return lIndex < rIndex
         }
         

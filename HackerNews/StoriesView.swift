@@ -10,7 +10,7 @@ import HackerNewsClient
 
 @Observable
 class StoriesViewModel {
-    var stories = [Story]()
+    var stories = [DomainStory]()
     
     private let client: HackerNewsClientProtocol
     
@@ -21,7 +21,7 @@ class StoriesViewModel {
     func fetchTopStories() async {
         let topStoriesIds = try? await client.getTopStories()
         let bestStories = await client.getItems(ids: topStoriesIds ?? [])
-        stories = bestStories.map({ Story(domainStory: $0) })
+        stories = bestStories
     }
 }
 
@@ -43,18 +43,37 @@ struct StoriesView: View {
 }
 
 #Preview {
-    let story = DomainStory(
-        id: 45622204,
-        title: "title",
-        author: "",
-        url: nil,
-        type: nil,
-        score: nil,
-        descendants: nil,
-        kids: nil,
-        time: nil
+    let storage = StoriesStorage(
+        stories: [
+            DomainStory(
+                id: 45622204,
+                title: "title",
+                author: "author",
+                url: nil,
+                type: nil,
+                score: nil,
+                descendants: nil,
+                kids: nil,
+                time: nil
+            ),
+            DomainStory(
+                id: 45622199,
+                title: "title2",
+                author: "author2",
+                url: nil,
+                type: nil,
+                score: nil,
+                descendants: nil,
+                kids: nil,
+                time: nil
+            )
+        ]
     )
-    let storage = StoriesStorage(stories: [story])
-    let viewModel = StoriesViewModel(client: HackerNewsClientMock(storage: storage))
+    let viewModel = StoriesViewModel(
+        client: HackerNewsClientMock(
+            storage: storage,
+            topStories: [45622204, 45622199]
+        )
+    )
     StoriesView(viewModel: viewModel)
 }
