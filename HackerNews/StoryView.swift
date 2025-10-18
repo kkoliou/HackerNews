@@ -26,6 +26,7 @@ struct StoryView: View {
                         icon: "arrow.up.right",
                         text: "\(score) pts"
                     )
+                    .layoutPriority(3)
                 }
                 
                 if let author = story.author {
@@ -33,6 +34,8 @@ struct StoryView: View {
                         icon: "person",
                         text: author
                     )
+                    .minimumScaleFactor(0.7)
+                    .layoutPriority(1)
                 }
                 
                 if let dateAgo = story.getTimeAgo() {
@@ -40,6 +43,7 @@ struct StoryView: View {
                         icon: "clock",
                         text: "\(dateAgo) ago"
                     )
+                    .layoutPriority(2)
                 }
             }
             
@@ -79,6 +83,7 @@ struct StoryView: View {
         HStack(spacing: spacing) {
             Image(systemName: icon)
             Text(text)
+                .lineLimit(1)
         }
     }
     
@@ -118,13 +123,13 @@ struct StoryView: View {
         story: .init(
             id: 43,
             title: "title",
-            author: "author",
+            author: "authorrrrrrrrrrrrrrrrrrrrrrr",
             url: URL(string: "https://www.example.com?temp=25"),
             type: "",
             score: 5,
             descendants: 5,
             kids: nil,
-            time: Date.current
+            time: mockDate
         )
     )
     .padding(.horizontal, 16)
