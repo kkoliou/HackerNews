@@ -8,45 +8,6 @@
 import SwiftUI
 import HackerNewsClient
 
-@Observable
-class StoriesViewModel {
-    
-    var stories = [DomainStory]()
-    var isLoading = false
-    var selectedCategory: StoriesCategory = .top
-    
-    private let client: HackerNewsClientProtocol
-    
-    init(client: HackerNewsClientProtocol) {
-        self.client = client
-    }
-    
-    func fetchData() async {
-        isLoading = true
-        let ids = try? await fetchStoryIds(for: selectedCategory)
-        let stories = await client.getItems(ids: ids ?? [])
-        isLoading = false
-        self.stories = stories
-    }
-    
-    private func fetchStoryIds(for category: StoriesCategory) async throws -> [Int] {
-        switch category {
-        case .top:
-            return try await client.getTopStories()
-        case .new:
-            return try await client.getNewStories()
-        case .best:
-            return try await client.getBestStories()
-        case .ask:
-            return try await client.getAskStories()
-        case .show:
-            return try await client.getShowStories()
-        case .job:
-            return try await client.getJobStories()
-        }
-    }
-}
-
 struct StoriesView: View {
     
     @Bindable var viewModel: StoriesViewModel
@@ -90,10 +51,29 @@ struct StoriesView: View {
     }
     
     var content: some View {
-        List(viewModel.stories) {
-            StoryView(story: $0)
+        List {
+            ForEach(viewModel.stories) { story in
+                StoryView(story: story)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                    .onAppear {
+                        guard let id = story.id else { return }
+                        Task {
+                            await viewModel.fetchNextBatchIfNeeded(currentItemId: id)
+                        }
+                    }
+            }
+
+            if viewModel.isPagingLoading {
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+                .id(viewModel.stories.count) // used to rerender that loader
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
+            }
         }
         .listStyle(.plain)
     }

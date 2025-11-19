@@ -104,7 +104,7 @@ struct StoryView: View {
                 .frame(maxWidth: .infinity)
             }
         )
-        .identityInteractiveGlassEffect()
+        .interactiveGlassEffect()
         .frame(height: 48)
     }
 }
