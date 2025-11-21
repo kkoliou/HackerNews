@@ -276,8 +276,8 @@ struct StoriesViewModelTests {
         return (sut, mockClient)
     }
     
-    private func createMockStory(id: Int) -> DomainStory {
-        DomainStory(
+    private func createMockStory(id: Int) -> DomainItem {
+        DomainItem(
             id: id,
             title: "Story \(id)",
             author: "user\(id)",
@@ -301,7 +301,7 @@ final class MockHackerNewsClient: HackerNewsClientProtocol, @unchecked Sendable 
     var jobStoriesResult: Result<[Int], Error> = .success([])
     var askStoriesResult: Result<[Int], Error> = .success([])
     var showStoriesResult: Result<[Int], Error> = .success([])
-    var itemsToReturn: [DomainStory] = []
+    var itemsToReturn: [DomainItem] = []
     var delayDuration: TimeInterval = 0
     
     var getTopStoriesCallCount = 0
@@ -348,12 +348,12 @@ final class MockHackerNewsClient: HackerNewsClientProtocol, @unchecked Sendable 
         return try showStoriesResult.get()
     }
     
-    func getItem(id: Int) async throws -> DomainStory {
+    func getItem(id: Int) async throws -> DomainItem {
         try await delay()
         return itemsToReturn.first { $0.id == id } ?? createDefaultStory(id: id)
     }
     
-    func getItems(ids: [Int]) async -> [DomainStory] {
+    func getItems(ids: [Int]) async -> [DomainItem] {
         getItemsCallCount += 1
         try? await delay()
         return itemsToReturn.filter { ids.contains($0.id!) }
@@ -365,8 +365,8 @@ final class MockHackerNewsClient: HackerNewsClientProtocol, @unchecked Sendable 
         }
     }
     
-    private func createDefaultStory(id: Int) -> DomainStory {
-        DomainStory(
+    private func createDefaultStory(id: Int) -> DomainItem {
+        DomainItem(
             id: id,
             title: "Default Story",
             author: "user",

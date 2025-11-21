@@ -17,7 +17,7 @@ class StoriesViewModel {
     @ObservationIgnored
     private var selectedCategoryStoryIds = [Int]()
     
-    var stories = [DomainStory]()
+    var stories = [DomainItem]()
     var isLoading = false
     var selectedCategory: StoriesCategory = .top
     var isPagingLoading = false

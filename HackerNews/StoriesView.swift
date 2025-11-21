@@ -82,7 +82,7 @@ struct StoriesView: View {
 #Preview {
     let storage = StoriesStorage(
         stories: [
-            DomainStory(
+            DomainItem(
                 id: 45622204,
                 title: "title",
                 author: "author",
@@ -93,7 +93,7 @@ struct StoriesView: View {
                 kids: nil,
                 time: nil
             ),
-            DomainStory(
+            DomainItem(
                 id: 45622199,
                 title: "title2",
                 author: "author2",

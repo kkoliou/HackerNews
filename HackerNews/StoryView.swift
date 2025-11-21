@@ -10,7 +10,7 @@ import HackerNewsClient
 
 struct StoryView: View {
     
-    let story: DomainStory
+    let story: DomainItem
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {

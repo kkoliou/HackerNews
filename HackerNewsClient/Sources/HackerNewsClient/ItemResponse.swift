@@ -1,5 +1,5 @@
 //
-//  StoryResponse.swift
+//  ItemResponse.swift
 //  HackerNews
 //
 //  Created by Konstantinos Kolioulis on 8/10/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StoryResponse: Decodable, Equatable {
+struct ItemResponse: Decodable, Equatable {
     
     let id: Int?
     let title: String?
@@ -50,8 +50,8 @@ struct StoryResponse: Decodable, Equatable {
         }
     }
     
-    func toDomain() -> DomainStory {
-        return DomainStory(
+    func toDomain() -> DomainItem {
+        return DomainItem(
             id: id,
             title: title,
             author: author,

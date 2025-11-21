@@ -37,20 +37,20 @@ final public class HackerNewsClientLive: HackerNewsClientProtocol {
         try await fetchStoryIds(endpoint: "showstories.json")
     }
 
-    public func getItem(id: Int) async throws -> DomainStory {
+    public func getItem(id: Int) async throws -> DomainItem {
         guard let url = URL(string: "\(baseUrl)/item/\(id).json") else {
             throw StoryError()
         }
         let (data, _) = try await URLSession.shared.data(from: url)
-        let apiStory = try JSONDecoder().decode(StoryResponse.self, from: data)
+        let apiStory = try JSONDecoder().decode(ItemResponse.self, from: data)
         return apiStory.toDomain()
     }
     
-    public func getItems(ids: [Int]) async -> [DomainStory] {
+    public func getItems(ids: [Int]) async -> [DomainItem] {
         let indexById: [Int: Int] = Dictionary(uniqueKeysWithValues: ids.enumerated().map { ($1, $0) })
         
         let stories = await withTaskGroup(
-            of: DomainStory?.self
+            of: DomainItem?.self
         ) { group in
             for id in ids {
                 group.addTask { [weak self] in
@@ -59,7 +59,7 @@ final public class HackerNewsClientLive: HackerNewsClientProtocol {
                 }
             }
             
-            var stories = [DomainStory]()
+            var stories = [DomainItem]()
             for await story in group {
                 guard let story else { continue }
                 stories.append(story)

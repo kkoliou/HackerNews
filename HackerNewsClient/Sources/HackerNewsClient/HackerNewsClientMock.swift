@@ -8,8 +8,8 @@
 import Foundation
 
 public actor StoriesStorage {
-    public var stories: [DomainStory]
-    public init(stories: [DomainStory]) {
+    public var stories: [DomainItem]
+    public init(stories: [DomainItem]) {
         self.stories = stories
     }
 }
@@ -48,7 +48,7 @@ final public class HackerNewsClientMock: HackerNewsClientProtocol {
         return []
     }
     
-    public func getItem(id: Int) async throws -> DomainStory {
+    public func getItem(id: Int) async throws -> DomainItem {
         if let story = await storage.stories.first(where: { $0.id == id }) {
             return story
         } else {
@@ -56,8 +56,8 @@ final public class HackerNewsClientMock: HackerNewsClientProtocol {
         }
     }
     
-    public func getItems(ids: [Int]) async -> [DomainStory] {
-        var storiesToReturn = [DomainStory]()
+    public func getItems(ids: [Int]) async -> [DomainItem] {
+        var storiesToReturn = [DomainItem]()
         for id in ids {
             if let story = await storage.stories.first(where: { $0.id == id }) {
                 storiesToReturn.append(story)

@@ -14,6 +14,6 @@ public protocol HackerNewsClientProtocol: Sendable {
     func getJobStories() async throws -> [Int]
     func getAskStories() async throws -> [Int]
     func getShowStories() async throws -> [Int]
-    func getItem(id: Int) async throws -> DomainStory
-    func getItems(ids: [Int]) async -> [DomainStory]
+    func getItem(id: Int) async throws -> DomainItem
+    func getItems(ids: [Int]) async -> [DomainItem]
 }

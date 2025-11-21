@@ -8,7 +8,7 @@
 import Foundation
 import HackerNewsClient
 
-extension DomainStory {
+extension DomainItem {
     func getTimeAgo(from date: Date = Date.current) -> String? {
         time?.timeAgoFromNow()
     }

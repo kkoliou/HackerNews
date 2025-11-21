@@ -1,5 +1,5 @@
 //
-//  DomainStory.swift
+//  DomainItem.swift
 //  HackerNews
 //
 //  Created by Konstantinos Kolioulis on 16/10/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DomainStory: Sendable, Identifiable {
+public struct DomainItem: Sendable, Identifiable {
     public let id: Int?
     public let title: String?
     public let author: String?
