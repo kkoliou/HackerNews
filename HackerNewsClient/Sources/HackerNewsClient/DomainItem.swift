@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DomainItem: Sendable, Identifiable {
+public struct DomainItem: Sendable, Identifiable, Hashable {
     public let id: Int?
     public let title: String?
     public let author: String?
@@ -17,6 +17,7 @@ public struct DomainItem: Sendable, Identifiable {
     public let descendants: Int?
     public let kids: [Int]?
     public let time: Date?
+    public let text: String?
     
     public init(
         id: Int?,
@@ -27,7 +28,8 @@ public struct DomainItem: Sendable, Identifiable {
         score: Int?,
         descendants: Int?,
         kids: [Int]?,
-        time: Date?
+        time: Date?,
+        text: String?
     ) {
         self.id = id
         self.title = title
@@ -38,5 +40,6 @@ public struct DomainItem: Sendable, Identifiable {
         self.descendants = descendants
         self.kids = kids
         self.time = time
+        self.text = text
     }
 }

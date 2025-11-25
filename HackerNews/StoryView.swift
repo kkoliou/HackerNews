@@ -11,6 +11,8 @@ import HackerNewsClient
 struct StoryView: View {
     
     let story: DomainItem
+    let onCommentsTap: () -> Void
+    let onLinkTap: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -51,7 +53,7 @@ struct StoryView: View {
                 buttonFor(
                     icon: "message",
                     text: "\(story.descendants ?? 0) comments",
-                    action: {}
+                    action: onCommentsTap
                 )
                 .foregroundStyle(.orange)
                 
@@ -59,7 +61,7 @@ struct StoryView: View {
                     buttonFor(
                         icon: "link",
                         text: url,
-                        action: {}
+                        action: onLinkTap
                     )
                     .foregroundStyle(.blue)
                 }
@@ -129,8 +131,11 @@ struct StoryView: View {
             score: 5,
             descendants: 5,
             kids: nil,
-            time: mockDate
-        )
+            time: mockDate,
+            text: ""
+        ),
+        onCommentsTap: {},
+        onLinkTap: {}
     )
     .padding(.horizontal, 16)
 }

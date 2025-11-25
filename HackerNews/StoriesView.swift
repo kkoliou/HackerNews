@@ -10,72 +10,83 @@ import HackerNewsClient
 
 struct StoriesView: View {
     
+    @Environment(\.navigate) private var navigate
+    @Environment(\.openURL) var openURL
     @Bindable var viewModel: StoriesViewModel
     
     var body: some View {
-        NavigationStack {
-            Group {
-                if viewModel.isLoading {
-                    ProgressView()
-                } else {
-                    content
-                }
+        Group {
+            if viewModel.isLoading {
+                ProgressView()
+            } else {
+                content
             }
-            .navigationTitle(viewModel.selectedCategory.rawValue.capitalized)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Picker("Stories", selection: $viewModel.selectedCategory) {
-                            ForEach(StoriesCategory.allCases) { category in
-                                Text(category.rawValue.capitalized)
-                                    .tag(category)
-                            }
+        }
+        .navigationTitle(viewModel.selectedCategory.rawValue.capitalized)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Picker("Stories", selection: $viewModel.selectedCategory) {
+                        ForEach(StoriesCategory.allCases) { category in
+                            Text(category.rawValue.capitalized)
+                                .tag(category)
                         }
-                    } label: {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                            .tint(.primary)
                     }
+                } label: {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                        .tint(.primary)
                 }
             }
-            .task {
-                await viewModel.fetchData()
-            }
-            .onChange(of: viewModel.selectedCategory) { oldValue, newValue in
-                if newValue != oldValue {
-                    Task {
-                        await viewModel.fetchData()
-                    }
+        }
+        .task {
+            await viewModel.fetchInitialData()
+        }
+        .onChange(of: viewModel.selectedCategory) { oldValue, newValue in
+            if newValue != oldValue {
+                Task {
+                    await viewModel.fetchData()
                 }
             }
         }
     }
     
     var content: some View {
-        List {
-            ForEach(viewModel.stories) { story in
-                StoryView(story: story)
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
+        ScrollView {
+            LazyVStack(spacing: 24) {
+                ForEach(viewModel.stories) { story in
+                    StoryView(
+                        story: story,
+                        onCommentsTap: {
+                            navigate.push(to: .comments(story: story))
+                        },
+                        onLinkTap: {
+                            guard let url = story.url else { return }
+                            if #available(iOS 26.0, *) {
+                                openURL(url, prefersInApp: true)
+                            } else {
+                                openURL(url)
+                            }
+                        }
+                    )
                     .onAppear {
                         guard let id = story.id else { return }
                         Task {
                             await viewModel.fetchNextBatchIfNeeded(currentItemId: id)
                         }
                     }
-            }
-
-            if viewModel.isPagingLoading {
-                HStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
                 }
-                .id(viewModel.stories.count) // used to rerender that loader
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
+                
+                if viewModel.isPagingLoading {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                    .id(viewModel.stories.count) // used to rerender that loader
+                }
             }
+            .padding(.horizontal, 16)
         }
-        .listStyle(.plain)
     }
 }
 
@@ -91,7 +102,8 @@ struct StoriesView: View {
                 score: nil,
                 descendants: nil,
                 kids: nil,
-                time: nil
+                time: nil,
+                text: nil
             ),
             DomainItem(
                 id: 45622199,
@@ -102,7 +114,8 @@ struct StoriesView: View {
                 score: nil,
                 descendants: nil,
                 kids: nil,
-                time: nil
+                time: nil,
+                text: nil
             )
         ]
     )

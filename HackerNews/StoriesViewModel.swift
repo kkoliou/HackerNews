@@ -22,10 +22,19 @@ class StoriesViewModel {
     var selectedCategory: StoriesCategory = .top
     var isPagingLoading = false
     
+    @ObservationIgnored
+    private var didFetchInitialData = false
+    
     private let client: HackerNewsClientProtocol
     
     init(client: HackerNewsClientProtocol) {
         self.client = client
+    }
+    
+    func fetchInitialData() async {
+        if didFetchInitialData { return }
+        didFetchInitialData = true
+        await fetchData()
     }
     
     func fetchData() async {

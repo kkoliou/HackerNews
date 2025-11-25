@@ -18,12 +18,14 @@ struct ItemResponse: Decodable, Equatable {
     let descendants: Int?
     let kids: [Int]?
     let time: Date?
+    let text: String?
 
     enum CodingKeys: String, CodingKey {
         case id, title, url, type, score, kids
         case author = "by"
         case descendants
         case time
+        case text
     }
 
     init(from decoder: Decoder) throws {
@@ -48,6 +50,7 @@ struct ItemResponse: Decodable, Equatable {
         } else {
             self.time = nil
         }
+        self.text = try container.decodeIfPresent(String.self, forKey: .text)
     }
     
     func toDomain() -> DomainItem {
@@ -60,7 +63,8 @@ struct ItemResponse: Decodable, Equatable {
             score: score,
             descendants: descendants,
             kids: kids,
-            time: time
+            time: time,
+            text: text
         )
     }
 }
