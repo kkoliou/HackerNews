@@ -38,7 +38,7 @@ struct Routes: View {
     var body: some View {
         switch route {
         case .comments(let story):
-            StoryCommentsView(viewModel: .init(client: HackerNewsClientLive(), story: story))
+            CommentsView(viewModel: .init(client: HackerNewsClientLive(), story: story))
         }
     }
 }

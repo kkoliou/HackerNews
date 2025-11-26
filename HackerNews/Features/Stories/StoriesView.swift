@@ -61,11 +61,7 @@ struct StoriesView: View {
                         },
                         onLinkTap: {
                             guard let url = story.url else { return }
-                            if #available(iOS 26.0, *) {
-                                openURL(url, prefersInApp: true)
-                            } else {
-                                openURL(url)
-                            }
+                            openURL.open(url)
                         }
                     )
                     .onAppear {

@@ -24,7 +24,7 @@ struct StoryView: View {
             
             HStack(spacing: 16) {
                 if let score = story.score {
-                    textWithIcon(
+                    TextWithIcon(
                         icon: "arrow.up.right",
                         text: "\(score) pts"
                     )
@@ -32,7 +32,7 @@ struct StoryView: View {
                 }
                 
                 if let author = story.author {
-                    textWithIcon(
+                    TextWithIcon(
                         icon: "person",
                         text: author
                     )
@@ -41,7 +41,7 @@ struct StoryView: View {
                 }
                 
                 if let dateAgo = story.getTimeAgo() {
-                    textWithIcon(
+                    TextWithIcon(
                         icon: "clock",
                         text: "\(dateAgo) ago"
                     )
@@ -77,18 +77,6 @@ struct StoryView: View {
         )
     }
     
-    func textWithIcon(
-        icon: String,
-        text: String,
-        spacing: CGFloat = 8
-    ) -> some View {
-        HStack(spacing: spacing) {
-            Image(systemName: icon)
-            Text(text)
-                .lineLimit(1)
-        }
-    }
-    
     func buttonFor(
         icon: String,
         text: String,
@@ -108,6 +96,20 @@ struct StoryView: View {
         )
         .interactiveGlassEffect()
         .frame(height: 48)
+    }
+}
+
+struct TextWithIcon: View {
+    let icon: String
+    let text: String
+    var spacing: CGFloat = 8
+    
+    var body: some View {
+        HStack(spacing: spacing) {
+            Image(systemName: icon)
+            Text(text)
+                .lineLimit(1)
+        }
     }
 }
 
