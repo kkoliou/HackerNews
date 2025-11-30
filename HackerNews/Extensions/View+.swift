@@ -9,9 +9,9 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func interactiveGlassEffect() -> some View {
+    func glassButton() -> some View {
         if #available(iOS 26.0, *) {
-            self.glassEffect(.regular.interactive())
+            self.buttonStyle(.glass)
         } else {
             self
         }

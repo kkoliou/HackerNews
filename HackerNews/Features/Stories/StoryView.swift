@@ -88,14 +88,14 @@ struct StoryView: View {
                 HStack(spacing: 4) {
                     Image(systemName: icon)
                     Text(text)
+                        .lineLimit(1)
                         .minimumScaleFactor(0.7)
                 }
-                .padding()
                 .frame(maxWidth: .infinity)
+                .frame(height: 40)
             }
         )
-        .interactiveGlassEffect()
-        .frame(height: 48)
+        .glassButton()
     }
 }
 
