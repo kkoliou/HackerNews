@@ -6,14 +6,3 @@
 //
 
 import SwiftUI
-
-extension View {
-    @ViewBuilder
-    func defaultButtonStyle() -> some View {
-        if #available(iOS 26.0, *) {
-            self.buttonStyle(.glass)
-        } else {
-            self.buttonStyle(.automatic)
-        }
-    }
-}

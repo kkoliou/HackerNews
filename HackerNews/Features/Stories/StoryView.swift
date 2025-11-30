@@ -95,7 +95,6 @@ struct StoryView: View {
                 .frame(height: 40)
             }
         )
-        .defaultButtonStyle()
     }
 }
 
