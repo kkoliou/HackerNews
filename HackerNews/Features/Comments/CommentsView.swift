@@ -12,7 +12,7 @@ struct CommentsView: View {
     
     @Environment(\.openURL) var openURL
     @Environment(\.navigate) private var navigate
-    let viewModel: StoryCommentsViewModel
+    @State var viewModel: StoryCommentsViewModel
     
     init(viewModel: StoryCommentsViewModel) {
         self.viewModel = viewModel
@@ -33,9 +33,9 @@ struct CommentsView: View {
                             .frame(height: 1)
                             .background(Color.gray.opacity(0.4))
                         
-                        LazyVStack(spacing: 24) {
+                        LazyVStack(spacing: 16) {
                             ForEach(viewModel.comments, id: \.id) {
-                                CommentsThreadView(comment: $0)
+                                CommentRowView(viewModel: viewModel, comment: $0)
                             }
                         }
                     }

@@ -53,7 +53,7 @@ struct StoriesView: View {
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 24) {
-                ForEach(viewModel.stories) { story in
+                ForEach(viewModel.stories, id: \.id) { story in
                     StoryView(
                         story: story,
                         onCommentsTap: {
