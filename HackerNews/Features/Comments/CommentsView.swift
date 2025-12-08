@@ -29,10 +29,6 @@ struct CommentsView: View {
                             story: viewModel.story
                         )
                         
-                        Divider()
-                            .frame(height: 1)
-                            .background(Color.gray.opacity(0.4))
-                        
                         LazyVStack(spacing: 16) {
                             ForEach(viewModel.comments, id: \.id) {
                                 CommentRowView(viewModel: viewModel, comment: $0)
