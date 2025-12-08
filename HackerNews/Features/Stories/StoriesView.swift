@@ -23,6 +23,7 @@ struct StoriesView: View {
             }
         }
         .navigationTitle(viewModel.selectedCategory.rawValue.capitalized)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
