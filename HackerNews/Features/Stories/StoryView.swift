@@ -55,7 +55,7 @@ struct StoryView: View {
                     text: "\(story.descendants ?? 0) comments",
                     action: onCommentsTap
                 )
-                .foregroundStyle(.orange)
+                .foregroundStyle(Color.darkGreen)
                 
                 if let url = story.getDomainUrl(), !url.isEmpty {
                     buttonFor(
