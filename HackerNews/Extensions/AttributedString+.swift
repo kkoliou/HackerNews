@@ -22,13 +22,11 @@ extension AttributedString {
             documentAttributes: nil
         ) else { return nil }
 
-        // ----- Styling -----
-
         let fullRange = NSRange(location: 0, length: nsAttr.length)
 
         // Default fonts
-        let baseFont   = UIFont.systemFont(ofSize: 16)
-        let boldFont   = UIFont.boldSystemFont(ofSize: 16)
+        let baseFont = UIFont.systemFont(ofSize: 16)
+        let boldFont = UIFont.boldSystemFont(ofSize: 16)
         let italicFont = UIFont.italicSystemFont(ofSize: 16)
 
         // Default paragraph style
@@ -45,10 +43,13 @@ extension AttributedString {
         ], range: fullRange)
 
         // Apply bold & italic overrides
-        nsAttr.enumerateAttributes(in: fullRange, options: []) { attrs, range, _ in
+        nsAttr.enumerateAttributes(
+            in: fullRange,
+            options: []
+        ) { attrs, range, _ in
             if let font = attrs[.font] as? UIFont {
                 let traits = font.fontDescriptor.symbolicTraits
-
+                
                 if traits.contains(.traitBold) {
                     nsAttr.addAttribute(.font, value: boldFont, range: range)
                 }
@@ -59,9 +60,13 @@ extension AttributedString {
         }
 
         // Style links
-        nsAttr.enumerateAttribute(.link, in: fullRange, options: []) { value, range, _ in
+        nsAttr.enumerateAttribute(
+            .link,
+            in: fullRange,
+            options: []
+        ) { value, range, _ in
             guard value != nil else { return }
-
+            
             nsAttr.addAttributes([
                 .foregroundColor: UIColor.systemBlue,
                 .underlineStyle: NSUnderlineStyle.single.rawValue
