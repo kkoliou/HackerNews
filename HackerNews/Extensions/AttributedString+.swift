@@ -35,7 +35,7 @@ extension AttributedString {
         paragraphStyle.paragraphSpacingBefore = 4
         paragraphStyle.paragraphSpacing = 8
 
-        // Apply default to everything FIRST
+        // Apply default to everything first
         nsAttr.addAttributes([
             .font: baseFont,
             .foregroundColor: UIColor.label,
@@ -71,6 +71,16 @@ extension AttributedString {
                 .foregroundColor: UIColor.systemBlue,
                 .underlineStyle: NSUnderlineStyle.single.rawValue
             ], range: range)
+        }
+        
+        // Often ends with "\n" or several. Remove only trailing newline characters.
+        while nsAttr.string.hasSuffix("\n") || nsAttr.string.hasSuffix("\r") {
+            let lastIndex = nsAttr.length - 1
+            if lastIndex >= 0 {
+                nsAttr.deleteCharacters(in: NSRange(location: lastIndex, length: 1))
+            } else {
+                break
+            }
         }
 
         self.init(nsAttr)
