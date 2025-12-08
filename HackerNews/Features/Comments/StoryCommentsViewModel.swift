@@ -29,53 +29,51 @@ class StoryCommentsViewModel {
     }
     
     func getInitialComments() async {
-        if didFetchInitialData { return }
+        guard !didFetchInitialData else { return }
         didFetchInitialData = true
+        
         isLoading = true
-        self.comments = await client.getItems(ids: story.kids ?? [])
-            .map({
-            let state: Comment.CommentState
-            if ($0.kids?.count ?? 0) > 0 {
-                state = .withButton
-            } else {
-                state = .noReplies
-            }
-            return Comment(
-                comment: $0,
-                attributedText: .init(html: $0.text ?? "") ?? AttributedString(""),
-                state: state,
-                level: 0
-            )
-        })
-        isLoading = false
+        defer { isLoading = false }
+        
+        let ids = story.kids ?? []
+        let items = await client.getItems(ids: ids)
+        
+        comments = items.map { makeComment(from: $0, level: 0) }
     }
     
     func getComments(for id: Int) async {
-        guard let targetIndex = findCommentIndex(by: id) else { return }
-        let target = comments[targetIndex]
+        guard let index = findCommentIndex(by: id) else { return }
+        let parent = comments[index]
         
-        target.state = .onLoading
-
-        let items = await client.getItems(ids: target.comment.kids ?? [])
-            .map({
-                let hasReplies = $0.kids?.isEmpty == false
-                return Comment(
-                    comment: $0,
-                    attributedText: .init(html: $0.text ?? "") ?? AttributedString(""),
-                    state: hasReplies ? .withButton : .noReplies,
-                    level: target.level + 1
-                )
-            })
+        comments[index].state = .onLoading
         
-        if !items.isEmpty {
-            comments.insert(contentsOf: items, at: targetIndex + 1)
-            target.state = .replies
-        } else {
-            target.state = .noReplies
+        let ids = parent.comment.kids ?? []
+        let items = await client.getItems(ids: ids)
+        let mapped = items.map { makeComment(from: $0, level: parent.level + 1) }
+        
+        if mapped.isEmpty {
+            comments[index].state = .noReplies
+            return
         }
+        
+        comments.insert(contentsOf: mapped, at: index + 1)
+        comments[index].state = .replies
     }
     
-    func findCommentIndex(by id: Int) -> Int? {
+    private func findCommentIndex(by id: Int) -> Int? {
         comments.firstIndex(where: { $0.id == id })
     }
+    
+    private func makeComment(from item: DomainItem, level: Int) -> Comment {
+        let hasReplies = (item.kids?.isEmpty == false)
+        let state: Comment.CommentState = hasReplies ? .withButton : .noReplies
+        
+        return Comment(
+            comment: item,
+            attributedText: AttributedString(html: item.text ?? "") ?? AttributedString(""),
+            state: state,
+            level: level
+        )
+    }
 }
+
