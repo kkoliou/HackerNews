@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7D06CE022EA2EF410068C62A /* HackerNewsClient in Frameworks */ = {isa = PBXBuildFile; productRef = 7D06CE012EA2EF410068C62A /* HackerNewsClient */; };
+		7D95FF5D2EE77EB2009DD664 /* Paginator in Frameworks */ = {isa = PBXBuildFile; productRef = 7D95FF5C2EE77EB2009DD664 /* Paginator */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		7D7E36452E8488B700074BE7 /* HackerNewsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackerNewsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D8E989E2EA2CE9A00766E55 /* HackerNewsClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = HackerNewsClient; sourceTree = "<group>"; };
 		7D8E989F2EA2D5ED00766E55 /* HackerNewsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = HackerNewsPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7D95FF5B2EE77CCA009DD664 /* Paginator */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Paginator; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -58,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D95FF5D2EE77EB2009DD664 /* Paginator in Frameworks */,
 				7D06CE022EA2EF410068C62A /* HackerNewsClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				7D8E989F2EA2D5ED00766E55 /* HackerNewsPlayground.playground */,
+				7D95FF5B2EE77CCA009DD664 /* Paginator */,
 				7D8E989E2EA2CE9A00766E55 /* HackerNewsClient */,
 				7D7E36302E8488B500074BE7 /* HackerNews */,
 				7D7E363E2E8488B700074BE7 /* HackerNewsTests */,
@@ -130,6 +134,7 @@
 			name = HackerNews;
 			packageProductDependencies = (
 				7D06CE012EA2EF410068C62A /* HackerNewsClient */,
+				7D95FF5C2EE77EB2009DD664 /* Paginator */,
 			);
 			productName = HackerNews;
 			productReference = 7D7E362E2E8488B500074BE7 /* HackerNews.app */;
@@ -650,6 +655,10 @@
 		7D06CE012EA2EF410068C62A /* HackerNewsClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = HackerNewsClient;
+		};
+		7D95FF5C2EE77EB2009DD664 /* Paginator */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Paginator;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

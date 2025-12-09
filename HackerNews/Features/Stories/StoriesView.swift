@@ -7,6 +7,7 @@
 
 import SwiftUI
 import HackerNewsClient
+import Paginator
 
 struct StoriesView: View {
     
@@ -16,7 +17,7 @@ struct StoriesView: View {
     
     var body: some View {
         Group {
-            if viewModel.isLoading {
+            if viewModel.paginator.isLoading {
                 ProgressView()
             } else {
                 content
@@ -54,7 +55,7 @@ struct StoriesView: View {
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 24) {
-                ForEach(viewModel.stories, id: \.id) { story in
+                ForEach(viewModel.paginator.items, id: \.id) { story in
                     StoryView(
                         story: story,
                         onCommentsTap: {
@@ -73,13 +74,13 @@ struct StoriesView: View {
                     }
                 }
                 
-                if viewModel.isPagingLoading {
+                if viewModel.paginator.isPagingLoading {
                     HStack {
                         Spacer()
                         ProgressView()
                         Spacer()
                     }
-                    .id(viewModel.stories.count) // used to rerender that loader
+                    .id(viewModel.paginator.items.count) // used to rerender that loader
                 }
             }
             .padding(.horizontal, 16)
