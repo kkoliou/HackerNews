@@ -286,7 +286,8 @@ struct StoriesViewModelTests {
             score: 100,
             descendants: 10,
             kids: nil,
-            time: Date()
+            time: Date(),
+            text: nil
         )
     }
 }
@@ -375,7 +376,8 @@ final class MockHackerNewsClient: HackerNewsClientProtocol, @unchecked Sendable 
             score: 0,
             descendants: 0,
             kids: nil,
-            time: Date()
+            time: Date(),
+            text: nil
         )
     }
 }
