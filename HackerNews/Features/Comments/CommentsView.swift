@@ -34,6 +34,15 @@ struct CommentsView: View {
                                 CommentRowView(viewModel: viewModel, comment: $0)
                             }
                         }
+                        
+                        if viewModel.isPagingLoading {
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                            }
+                            .id(viewModel.comments.count) // used to rerender that loader
+                        }
                     }
                     .padding(16)
                 }

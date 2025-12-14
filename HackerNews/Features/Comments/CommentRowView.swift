@@ -39,5 +39,10 @@ struct CommentRowView: View {
             }
         }
         .padding(.leading, CGFloat(comment.level * 16))
+        .onAppear {
+            Task {
+                await viewModel.fetchNextBatchIfNeeded(currentItemId: comment.id)
+            }
+        }
     }
 }

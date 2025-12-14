@@ -11,8 +11,16 @@ import HackerNewsClient
 @MainActor @Observable
 class StoryCommentsViewModel {
     
+    @ObservationIgnored
+    private let pageSize = 30
+    
+    @ObservationIgnored
+    private var subcommentsFetched = 0
+    
+    var kidsIds = [Int]()
     var comments = [Comment]()
     var isLoading = false
+    var isPagingLoading = false
     
     private let client: HackerNewsClientProtocol
     let story: DomainItem
@@ -35,8 +43,8 @@ class StoryCommentsViewModel {
         isLoading = true
         defer { isLoading = false }
         
-        let ids = story.kids ?? []
-        let items = await client.getItems(ids: ids)
+        kidsIds = story.kids ?? []
+        let items = await client.getItems(ids: Array(kidsIds.prefix(pageSize)))
         
         comments = items.map { makeComment(from: $0, level: 0) }
     }
@@ -60,6 +68,29 @@ class StoryCommentsViewModel {
             comments.insert(contentsOf: mapped, at: index + 1)
             comments[index].state = .replies
         }
+        
+        subcommentsFetched += mapped.count
+    }
+    
+    func fetchNextBatchIfNeeded(currentItemId: Int) async {
+        guard !isPagingLoading, currentItemId == comments.last?.id
+        else { return }
+        await fetchNextBatch()
+    }
+    
+    private func fetchNextBatch() async {
+        isPagingLoading = true
+        
+        let startIndex = comments.count - subcommentsFetched
+        let endIndex = min(startIndex + pageSize, kidsIds.count)
+        let nextBatchIds = Array(kidsIds[startIndex..<endIndex])
+        
+        let comments = await client.getItems(ids: nextBatchIds)
+            .map { makeComment(from: $0, level: 0) }
+        
+        isPagingLoading = false
+        
+        self.comments.append(contentsOf: comments)
     }
     
     private func findCommentIndex(by id: Int) -> Int? {
