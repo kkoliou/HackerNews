@@ -56,8 +56,10 @@ class StoryCommentsViewModel {
             return
         }
         
-        comments.insert(contentsOf: mapped, at: index + 1)
-        comments[index].state = .replies
+        withAnimation {
+            comments.insert(contentsOf: mapped, at: index + 1)
+            comments[index].state = .replies
+        }
     }
     
     private func findCommentIndex(by id: Int) -> Int? {
