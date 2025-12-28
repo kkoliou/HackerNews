@@ -64,10 +64,8 @@ class StoryCommentsViewModel {
             return
         }
         
-        withAnimation {
-            comments.insert(contentsOf: mapped, at: index + 1)
-            comments[index].state = .replies
-        }
+        comments.insert(contentsOf: mapped, at: index + 1)
+        comments[index].state = .replies
         
         subcommentsFetched += mapped.count
     }
